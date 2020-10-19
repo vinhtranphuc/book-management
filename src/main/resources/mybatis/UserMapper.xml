@@ -1,0 +1,33 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.mybatis.mapper.BookMapper">
+
+	<sql id="sqlUserFields">
+		a.user_id
+		<!-- ,a.password -->
+		,a.type
+		,a.name
+		,a.email
+		,a.avatar_img
+		,a.join_date
+		,a.username
+	</sql>
+	
+	<select id="selectUsers" resultType="UserVO">
+		SELECT
+			<include refid="sqlUserFields"></include>
+		FROM
+			USERS A
+			<if test='user_id != null and user_id != ""'>
+				WHERE A.USER_ID = #{user_id}
+			</if>
+			GROUP BY A.USER_ID
+	</select>
+	
+	<select id="getUserById" resultType="UserVO">
+		SELECT
+		<include refid="sqlUserFields"></include>
+		FROM USERS A
+		WHERE A.USER_ID = #{user_id}
+	</select>
+</mapper>

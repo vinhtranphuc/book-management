@@ -1,0 +1,133 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.mybatis.mapper.BookMapper">
+
+	<sql id="sqlBookFields">
+		b.book_id,
+		b.title,
+		b.description,
+		b.enabled,
+		b.image,
+		b.user_id,
+		DATE_FORMAT(b.created_at, '%m/%d/%Y %H:%i') AS created_at,
+		DATE_FORMAT(b.updated_at, '%m/%d/%Y %H:%i') AS updated_at,
+		CASE WHEN b.enabled = 1 THEN 'Enabled' ELSE 'Disabled' END AS status,
+		CONCAT(u.first_name,' ',u.last_name) AS create_user
+	</sql>
+	
+	<sql id="sqlPaginatorList">
+		<choose>
+			<when test="start_list !=null and start_list != '' and records_no != null and records_no != ''">
+				LIMIT ${start_list},${records_no}
+			</when>
+			<when test="records_no != null and records_no != ''">
+				LIMIT ${records_no}
+			</when>
+		</choose>
+	</sql>
+	
+	<sql id="sqlWhereBooks">
+		<where>
+			<if test="title != null and title != ''">
+				AND b.title LIKE CONCAT('%',#{title},'%')
+			</if>
+			<if test="created_at != null and created_at != ''">
+				AND DATE_FORMAT(b.created_at,'%Y-%m-%d') = #{created_at}
+			</if>
+			<if test="author_id != null and author_id != ''">
+				AND a.author_id = #{author_id}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectBooksTotCnt" resultType="int">
+		SELECT
+			COUNT(t.book_id)
+		FROM (
+			SELECT
+				b.book_id
+			FROM
+				books b INNER JOIN users u
+					ON b.user_id = u.user_id
+				INNER JOIN books_authors ba
+					ON b.book_id = ba.book_id
+				INNER JOIN authors a
+					ON ba.author_id = a.author_id
+			<include refid="sqlWhereBooks"></include>
+			GROUP BY b.book_id
+		) t
+	</select>
+	
+	<select id="selectBooks" resultType="FieldMap">
+		SELECT
+			<include refid="sqlBookFields"></include>
+		FROM
+			books b INNER JOIN users u
+				ON b.user_id = u.user_id
+			INNER JOIN books_authors ba
+				ON b.book_id = ba.book_id
+			INNER JOIN authors a
+				ON ba.author_id = a.author_id
+		<include refid="sqlWhereBooks"></include>
+		GROUP BY b.book_id
+		ORDER BY b.book_id
+		<include refid="sqlPaginatorList"></include>
+	</select>
+	
+	<insert id="insertBooksAuthors">
+		INSERT INTO books_authors (
+			book_id,
+			author_id
+		) VALUES (
+			#{book_id},
+			#{author_id}
+		)
+	</insert>
+	
+	<insert id="insertBook">
+		INSERT INTO books(
+			description,
+			enabled,
+			image,
+			title,
+			user_id,
+			created_at,
+			updated_at
+		) VALUES (
+			#{description},
+			#{enabled},
+			#{image},
+			#{title},
+			#{user_id},
+			NOW(),
+			NOW()
+		)
+		<selectKey resultType="java.lang.String" order="AFTER" keyProperty="book_id">
+            	SELECT LAST_INSERT_ID() as id
+        </selectKey>
+	</insert>
+	
+	<delete id="deleteBooksAuthorsByBookId">
+		DELETE FROM books_authors
+		WHERE
+			book_id = #{book_id}
+	</delete>
+
+	<update id="updateBook">
+		UPDATE books
+		SET
+			description = #{description},
+			enabled = #{enabled},
+			image = #{image},
+			title = #{title},
+			updated_at = NOW()
+		WHERE
+			book_id = #{book_id}
+	</update>
+	
+	<delete id="deleteBook">
+		DELETE FROM books
+		WHERE
+			book_id = #{book_id}
+	</delete>
+</mapper>

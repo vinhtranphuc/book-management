@@ -1,0 +1,88 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.mybatis.mapper.AuthorMapper">
+	
+	<sql id="sqlAuthorFields">
+		a.author_id,
+		a.avatar,
+		a.description,
+		a.full_name
+	</sql>
+	
+	<sql id="sqlPaginatorList">
+		<choose>
+			<when test="start_list !=null and start_list != '' and records_no != null and records_no != ''">
+				LIMIT ${start_list},${records_no}
+			</when>
+			<when test="records_no != null and records_no != ''">
+				LIMIT ${records_no}
+			</when>
+		</choose>
+	</sql>
+	
+	<select id="selectAuthors" resultType="Map">
+		SELECT
+			<include refid="sqlAuthorFields"></include>
+		FROM
+			authors a
+	</select>
+	
+	<select id="selectAuthorsByBookId" resultType="FieldMap">
+		SELECT
+			<include refid="sqlAuthorFields"></include>
+		FROM
+			authors a JOIN books_authors ba ON a.author_id = ba.author_id
+			JOIN books b ON ba.book_id = b.book_id
+		WHERE
+			b.book_id = #{book_id}
+	</select>
+	
+	<select id="selectAuthorsTotCnt" resultType="int">
+		SELECT
+			COUNT(a.author_id)
+		FROM
+			authors a
+	</select>
+	
+	<select id="selectPageAuthors" resultType="FieldMap">
+		SELECT
+			<include refid="sqlAuthorFields"></include>
+		FROM
+			authors a
+		<include refid="sqlPaginatorList"></include>
+	</select>
+	
+	<insert id="insertAuthor">
+		INSERT INTO authors(
+			full_name,
+			description,
+			avatar
+		) VALUES (
+			#{fullName},
+			#{description},
+			#{avatar}
+		)
+	</insert>
+	
+	<update id="updateAuthor">
+		UPDATE authors
+		SET
+			full_name = #{fullName},
+			description = #{description},
+			avatar = #{avatar}
+		WHERE
+			author_id = #{author_id}
+	</update>
+	
+	<delete id="deleteBooksAuthors">
+		DELETE FROM books_authors
+		WHERE
+			author_id = #{authorId}
+	</delete>
+	
+	<delete id="deleteAuthor">
+		DELETE FROM authors
+		WHERE
+			author_id = #{authorId}
+	</delete>
+</mapper>
