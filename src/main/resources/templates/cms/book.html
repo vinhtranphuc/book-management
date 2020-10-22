@@ -1,0 +1,95 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/cms-layout}">
+<head th:include="~{fragments/cms-head :: title('Main')}"></head>
+<body>
+	<!-- Begin Page Content -->
+    <div class="container-fluid" layout:fragment="content">
+
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Book Management</h1>
+
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Book List</h6>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+          	<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">Create Book</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Authors</th>
+                  <th>Description</th>
+                  <th>Create User</th>
+                  <th>Create At</th>
+                  <th>Update At</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <!-- <tfoot>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Office</th>
+                  <th>Age</th>
+                  <th>Start date</th>
+                  <th>Salary</th>
+                </tr>
+              </tfoot> -->
+              <tbody>
+                <th:block th:each="element : ${bookList}">
+                  <tr>
+                      <td th:text="${element.title}"></td>
+                      <td th:text="${element.authornames}"></td>
+                      <td th:text="${element.description}"></td>
+                      <td th:text="${element.create_user}"></td>
+                      <td th:text="${element.created_at}"></td>
+                      <td th:text="${element.updated_at}"></td>
+                      <td th:text="${element.status}"></td>
+                      <td>
+                      	<a href="#" class="btn btn-danger btn-circle">
+		                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+		                </a>
+                      	<a href="#" class="btn btn-danger btn-circle">
+		                  <i class="fas fa-trash"></i>
+		                </a>
+                      </td>
+                  </tr>
+                 </th:block>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- /.container-fluid -->
+    <div layout:fragment="modals">
+   	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    </div>
+</body>
+</html>
+<script>
+</script>

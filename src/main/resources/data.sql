@@ -44,13 +44,15 @@ INSERT IGNORE INTO `roles` (`role_id`, `name`) VALUES
 -- Dumping data for table book.users: ~1 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT IGNORE INTO `users` (`user_id`, `avatar`, `email`, `enabled`, `first_name`, `last_name`, `password`) VALUES
-	(1, 'xxx', 'admin@gmail.com', b'1', 'Tran', 'Vinh', '$2a$10$5ERgZqDh0NwGqVA2qbwE0.oRfkSRrS.v.TkfIXaNP2Z6W16YYcvSa');
+	(1, 'xxx', 'admin@gmail.com', b'1', 'Tran', 'Vinh', '$2a$10$5ERgZqDh0NwGqVA2qbwE0.oRfkSRrS.v.TkfIXaNP2Z6W16YYcvSa'),
+	(2, 'xxx', 'user@gmail.com', b'1', 'Tran', 'User', '$2a$10$5ERgZqDh0NwGqVA2qbwE0.oRfkSRrS.v.TkfIXaNP2Z6W16YYcvSa');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Dumping data for table book.user_roles: ~1 rows (approximately)
 /*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
 INSERT IGNORE INTO `user_roles` (`user_id`, `role_id`) VALUES
-	(1, 2);
+	(1, 2),
+	(2, 1);
 /*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

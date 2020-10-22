@@ -74,6 +74,20 @@
 		<include refid="sqlPaginatorList"></include>
 	</select>
 	
+	<select id="selectAllBooks" resultType="FieldMap">
+		SELECT
+			<include refid="sqlBookFields"></include>
+		FROM
+			books b INNER JOIN users u
+				ON b.user_id = u.user_id
+			INNER JOIN books_authors ba
+				ON b.book_id = ba.book_id
+			INNER JOIN authors a
+				ON ba.author_id = a.author_id
+		GROUP BY b.book_id
+		ORDER BY b.book_id
+	</select>
+	
 	<insert id="insertBooksAuthors">
 		INSERT INTO books_authors (
 			book_id,

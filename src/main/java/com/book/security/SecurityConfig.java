@@ -89,13 +89,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js",
-                        "/**/*.map")
+                        "/**/*.map",
+                        "/**/*.woff2")
                         	.permitAll()
-                    .antMatchers("/api/auth/**")
+                    .antMatchers("/auth/**")
                         .permitAll()
-                    .antMatchers("/api/book/book-list")
+                    .antMatchers("/book","/book/")
                         .permitAll()
-                    .antMatchers("/api/author/author-list","/api/author/author-page-list")
+                    .antMatchers("/book/api/book-list")
+                        .permitAll()
+                    .antMatchers("/author/api/author-list","/api/author/author-page-list")
                         .permitAll()
                     .antMatchers(HttpMethod.POST,"/api/image/preview")
                         .permitAll()
@@ -112,6 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity webSecurity) throws Exception {
     	super.configure(webSecurity);
     	webSecurity.ignoring().antMatchers(SWAGGER_AUTH_LIST);
+    	webSecurity.ignoring().antMatchers("/cms/vendors/**", "/cms/js/**", "/cms/css/**","/cms/scss/**");
         webSecurity.httpFirewall(allowUrlEncodedSlashHttpFirewall());
     }
 

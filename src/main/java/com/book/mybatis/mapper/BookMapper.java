@@ -21,4 +21,6 @@ public interface BookMapper {
 	void updateBook(Map<String, Object> params);
 
 	void deleteBook(Map<String, Object> params);
+
+	<T> List<T> selectAllBooks();
 }

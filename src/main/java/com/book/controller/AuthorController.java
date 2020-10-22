@@ -27,16 +27,16 @@ import com.book.payload.Response;
 import com.book.service.LibaryService;
 
 @RestController
-@RequestMapping(value = "/api/author")
+@RequestMapping(value = "/author")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthorController {
 
 	protected Logger logger = LoggerFactory.getLogger(BookController.class);
-	
+
 	@Autowired
 	private LibaryService libaryService;
 
-	@RequestMapping(value = "/author-list", method = RequestMethod.GET, produces = {
+	@RequestMapping(value = "/api/author-list", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public <T> ResponseEntity<Response> getAuthors(@RequestParam Map<String,Object> params) {
 		try {
@@ -48,7 +48,7 @@ public class AuthorController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	
-	@RequestMapping(value = "/author-page-list", method = RequestMethod.GET, produces = {
+	@RequestMapping(value = "/api/author-page-list", method = RequestMethod.GET, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public <T> ResponseEntity<Response> getPageAuthors(@RequestParam Map<String,Object> params) {
 		try {
@@ -60,7 +60,7 @@ public class AuthorController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	
-	@PostMapping("/create-author")
+	@PostMapping("/api/create-author")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Response> createAuthor(@Valid @RequestBody Map<String,Object> params) {
 		try {
@@ -72,7 +72,7 @@ public class AuthorController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	
-	@PutMapping("/edit-author")
+	@PutMapping("/api/edit-author")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Response> editAuthor(@Valid @RequestBody Map<String,Object> params) {
 		try {
@@ -84,7 +84,7 @@ public class AuthorController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	
-	@DeleteMapping("/delete-author")
+	@DeleteMapping("/api/delete-author")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Response> deleteAuthor(@RequestParam Map<String,Object> params) {
 		try {

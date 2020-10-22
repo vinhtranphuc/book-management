@@ -59,7 +59,7 @@ public class AuthController extends BaseController {
 		return "auth/login";
 	}
 
-	@PostMapping("api/login")
+	@PostMapping("/api/login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest,HttpServletResponse response,HttpServletRequest request) {
 		
 		try {

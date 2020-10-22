@@ -9,6 +9,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +54,15 @@ public class AES {
 
 	public static String decrypt(String strToDecrypt, String secret) {
 		
-		try {
-			setKey(secret);
-			Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-			cipher.init(Cipher.DECRYPT_MODE, secretKey);
-			return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
-		} catch (Exception e) {
-			logger.error("Exception : {}", "Error while decrypting: " + ExceptionUtils.getStackTrace(e));
+		if(StringUtils.isNotEmpty(secret)) {
+			try {
+				setKey(secret);
+				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+				cipher.init(Cipher.DECRYPT_MODE, secretKey);
+				return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
+			} catch (Exception e) {
+				logger.error("Exception : {}", "Error while decrypting: " + ExceptionUtils.getStackTrace(e));
+			}
 		}
 		return null;
 	}

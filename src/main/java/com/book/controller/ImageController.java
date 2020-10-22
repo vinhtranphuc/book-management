@@ -20,14 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @RestController
-@RequestMapping(value = "/api/image")
+@RequestMapping(value = "/image")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ImageController {
 	
 	protected Logger logger = LoggerFactory.getLogger(ImageController.class);
 	
 	@SuppressWarnings("unchecked")
-	@PostMapping(value = "/preview")
+	@PostMapping(value = "/api/preview")
 	public <T> ResponseEntity<T> preview(HttpServletResponse response, MultipartHttpServletRequest mRequest) {
 		try {
 			

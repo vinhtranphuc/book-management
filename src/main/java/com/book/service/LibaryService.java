@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.book.common.FieldMap;
@@ -92,6 +93,28 @@ public class LibaryService {
 		List<T> authors = authorMapper.selectAuthors();
 		System.out.println("Getting data from DB : " + authors);
 		return authors;
+	}
+	
+	/**
+	 * get all books
+	 * @param <T>
+	 * @param <T>
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> List<FieldMap> getBooks() {
+		books = bookMapper.selectAllBooks();
+		books.stream().forEach(t-> {
+			List<T> authors = authorMapper.selectAuthorsByBookId(t);
+			String authorNames = "";
+			for(T e:authors) {
+				String fullName = (String) ((Map<String,Object>) e).get("full_name");
+				authorNames+=((StringUtils.isNotEmpty(fullName)?fullName+(authors.indexOf(e)!=(authors.size()-1)?", ":""):fullName));
+			}
+			t.put("authors", authors);
+			t.put("authorNames", authorNames);
+		});
+		return books;
 	}
 	
 	/**
@@ -193,4 +216,5 @@ public class LibaryService {
 		bookMapper.deleteBooksAuthorsByBookId(params);
 		bookMapper.deleteBook(params);
 	}
+
 }
